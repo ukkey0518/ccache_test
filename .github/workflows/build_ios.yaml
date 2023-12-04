@@ -40,5 +40,8 @@ jobs:
       - name: Run bundle install
         run: cd ios && bundle install
 
+      - name: Install Provisioning Profiles
+        run: cd ios && bundle exec fastlane match development --readonly
+
       - name: Build ipa
         run: flutter build ipa --release
