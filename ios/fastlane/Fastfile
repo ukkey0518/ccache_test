@@ -23,3 +23,17 @@ platform :ios do
     upload_to_testflight
   end
 end
+
+desc "match development for ci"
+ lane :sync_development_provisioning_files do
+   if is_ci
+     ENV['MATCH_KEYCHAIN_NAME'] = 'TempKeychain'
+     ENV['MATCH_KEYCHAIN_PASSWORD'] = 'TempKeychainPassword'
+     create_keychain(
+       name: ENV['MATCH_KEYCHAIN_NAME'],
+       password: ENV['MATCH_KEYCHAIN_PASSWORD'],
+       timeout: 1800
+     )
+     match(type: "development", readonly: true)
+   end
+ end

@@ -13,6 +13,9 @@ jobs:
     if: ${{ github.event.inputs.deploy_dev == 'true' }}
     runs-on: macos-13
     timeout-minutes: 60
+    env:
+      PERSONAL_TOKEN: ${{ secrets.GIT_HUB_PERSONAL_ACCESS_TOKEN }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -41,7 +44,7 @@ jobs:
         run: cd ios && bundle install
 
       - name: Install Provisioning Profiles
-        run: cd ios && bundle exec fastlane match development --readonly
+        run: cd ios && bundle exec fastlane sync_development_provisioning_files
 
       - name: Build ipa
         run: flutter build ipa --release
